@@ -14,6 +14,9 @@ class ProjectController extends Zend_Controller_Action {
         
     }
 
+	function addAction() {
+		
+	}
     
 }
 
