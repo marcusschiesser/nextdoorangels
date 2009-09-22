@@ -1,18 +1,36 @@
-<?php $this->placeholder('title')->set('Add a social project'); ?>
 <fb:header>
-    NextdoorAngels - Found a new social project
+    NextdoorAngels - Start a new social project
 </fb:header>
 <fb:editor action="?do-it" labelwidth="100">
-    <fb:editor-text label="Title" name="title" value=""/><fb:editor-textarea label="Description" name="description" rows="10"/><fb:editor-date label="Deadline" name="deadline"/>
+    <?php 
+    if (count($this->errors) > 0) {
+        echo "<fb:error>";
+        foreach ($this->errors as $i => $value) {
+            echo "<fb:message>" + $i + ": " + $value + "</fb:message>";
+        }
+        echo "</fb:error>";
+    }
+    ?>
+    <fb:editor-text label="Title" name="title" value=""/>
     <fb:editor-custom label="Place">
-        <input type="text" name="place" value=""/><!-- put google static map here -->
-        <fb:iframe frameborder="0" marginwidth="0" marginheight="0" border="0" style="border:0;margin:4px 0 0 0;width:100%;height:300px;" src="http://nextdoorangels.org/project/showMap" scrolling="no" allowtransparency="true">
-        </fb:iframe>
-    </fb:editor-custom><!-- invite friends -->
+        <input type="text" name="place" value="" onchange="changePlace(this);"/><!-- put google static map here -->
+        <img id="map" width="300" height="300" style="border:0;margin:4px 0 0 0;"/>
+    </fb:editor-custom><fb:editor-textarea label="Description" name="description" rows="10"/><fb:editor-date label="Deadline" name="deadline"/><!-- invite friends -->
     <fb:editor-custom label="Invitation">
         <input type="checkbox" name="send_invitation" checked="true" value="true" style="width:10%;"/>Invite all my friends
     </fb:editor-custom>
     <fb:editor-buttonset>
-        <fb:editor-button value="Found project"/><fb:editor-cancel/>
+        <fb:editor-button value="Start project" onclick="onClick();"/><fb:editor-cancel/>
     </fb:editor-buttonset>
 </fb:editor>
+<script>
+    function changePlace(node){
+        var map = document.getElementById('map');
+        var place = escape(node.getValue());
+        map.setSrc("http://maps.google.com/maps/api/staticmap?center=" + place + "&zoom=14&size=300x300&maptype=roadmap&markers=color:blue|label:S|" + place + "&sensor=false&key=ABQIAAAAquIIHMFUJg94ExRueMgLfBQIu6Cqdu4lKKxoe7OOJi78eqEEHxRsyWCmPNoQeMzdw--XVrPd4alMGA");
+    }
+    
+    function onClick(){
+        showMessage('Thank you!', 'You succesfully created a social project. We wish you a lot of success.');
+    }
+</script>
