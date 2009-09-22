@@ -14,6 +14,7 @@
         <controllerFile controllerName="error"/>
         <controllerFile controllerName="project">
           <actionMethod actionName="add"/>
+          <actionMethod actionName="showMap"/>
         </controllerFile>
       </controllersDirectory>
       <layoutsDirectory enabled="false"/>
@@ -29,6 +30,7 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="project">
             <viewScriptFile forActionName="add"/>
+            <viewScriptFile forActionName="showMap"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
