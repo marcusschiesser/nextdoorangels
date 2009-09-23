@@ -9,6 +9,14 @@ class ProjectController extends Zend_Controller_Action {
         /* Initialize action controller here */
     }
     
+    private function lookupAdress($address) {
+        $httpClient = new Zend_Http_Client("http://maps.google.com/maps/geo");
+        $httpClient->setParameterGet("q", urlencode($address))->setParameterGet("key", "ABQIAAAAquIIHMFUJg94ExRueMgLfBRqIoZm6jji5rsO5B8qBiDUbrl1FRQdaeL1jsj3fTRyvOT7EK7euL9jmA")->setParameterGet("sensor", "false")->setParameterGet("output", "json");
+        $result = $httpClient->request("GET");
+        $response = Zend_Json_Decoder::decode($result->getBody(), Zend_Json::TYPE_OBJECT);
+        return array($response->Placemark[0]->Point->coordinates[0], $response->Placemark[0]->Point->coordinates[1]);
+    }
+    
     public function addAction() {
         $this->view->errors = array();
         $request = $this->getRequest();
@@ -37,10 +45,13 @@ class ProjectController extends Zend_Controller_Action {
             }
             // do the commit
             if (count($this->view->errors) == 0) {
+                // do geo lookup
+                list($lng, $lat) = $this->lookupAdress($place);
                 // commit project
-                
-                // TODO: inform user
-				$this->_helper->FlashMessenger('You successfully created a social project. We wish you a lot of success.');
+                $table = new Model_DbTable_Problems();
+                $table->insert(array('p_name'=>$title, 'p_description'=>$description, 'p_address' => $place, 'p_lat' => $lat, 'p_lng' => $lng));
+                // inform user & forward to index
+                $this->_helper->FlashMessenger('You successfully created a social project. We wish you a lot of success.');
                 return $this->_forward('index', 'index');
             }
         }
