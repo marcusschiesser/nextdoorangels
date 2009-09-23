@@ -1,22 +1,11 @@
 <?php 
-$err = error_reporting(E_ERROR);
-require_once 'facebook/facebook.php';
-error_reporting($err);
+require_once 'FacebookController.php';
 
-class IndexController extends Zend_Controller_Action {
+class IndexController extends FacebookController {
 
-    public function init() {
-        /* Initialize action controller here */
-    }
-
-    
-    public $apiKey = "39ba65eb321178034ce6abf4055fe99f";
-    public $apiSecret = "60f2f411e3b124404dbbf81787198690";
-    
     function indexAction() {
-        $facebook = new Facebook($this->apiKey, $this->apiSecret);
-        $facebook->require_login();
-        
+    	$this->requireLogin();
+
         $this->view->title = 'Testing a FB App';
 		$this->view->shortdescription = 'NextDoorAngels is a facebook application that lets you find social needs in your neighborhood';
 
@@ -30,7 +19,6 @@ class IndexController extends Zend_Controller_Action {
 		$this->view->fb_name	= $problem['fb_name_helpseeker'];
 
     }
-
     
 }
 
