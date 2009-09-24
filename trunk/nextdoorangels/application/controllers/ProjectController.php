@@ -12,6 +12,7 @@ class ProjectController extends FacebookController {
     }
     
     public function addAction() {
+        $this->requireLogin();
         $this->view->errors = array();
         $request = $this->getRequest();
         $doit = $request->getParam('do-it');
@@ -22,7 +23,10 @@ class ProjectController extends FacebookController {
             $place = $request->getParam('place');
             $deadline_day = $request->getParam('deadline_day');
             $deadline_month = $request->getParam('deadline_month');
-            $send_invitation = $request->getParam('send_invitation');
+            $deadline = mktime(23, 59, 59, $deadline_month, $deadline_day);
+            if ($deadline == FALSE) {
+                $this->view->errors['Deadline'] = 'is not a valid date.';
+            }
             // validate values
             $titleValidator = new Zend_Validate();
             $titleValidator->addValidator( new Zend_Validate_StringLength(8));
@@ -42,40 +46,49 @@ class ProjectController extends FacebookController {
                 // do geo lookup
                 list($lng, $lat) = $this->lookupAdress($place);
                 // commit project
+				$event_data = array('name'=>$title, 'city'=>$place, 'start_time'=>time(), 'end_time'=>$deadline,
+				'category' => 1, 'subcategory' => 1, 'location' => 'Your House', 'host' => 'You');
+                try {
+                    $event_id = $this->facebook->api_client->events_create($event_data);
+                }
+                catch(Exception $e) {
+                    $event_id = 'Error message: '.$e->getMessage().' Error code:'.$e->getCode();
+                } 
+				//$event_id = "1";
                 $table = new Model_DbTable_Problems();
-                $table->insert(array('p_name'=>$title, 'p_description'=>$description, 'p_address' => $place, 'p_lat' => $lat, 'p_lng' => $lng, 'fb_user_id' => $this->fbUserId));
+                $table->insert(array('p_name'=>$title, 'p_description'=>$description, 'p_address'=>$place, 'p_lat'=>$lat, 'p_lng'=>$lng, 'fb_user_id'=>$this->fbUserId, 'p_deadline'=>date("Y-m-d H:i:s", $deadline), 'p_created_at'=>date("Y-m-d H:i:s", time()), 'fb_event_id'=>$event_id));
                 // inform user & forward to index
-                $this->_helper->FlashMessenger('You successfully created a social project. We wish you a lot of success.');
+                $this->_helper->FlashMessenger('You successfully created the social project <fb:eventlink eid="'.$event_id.'"/>. Just click on the link and invite some friends. We wish you a lot of success. ');
                 return $this->_forward('index', 'index');
             }
         }
     }
-	
-	public function showAction() {
-	    $this->_helper->Layout->disableLayout();
-    	$this->_helper->ViewRenderer->setNoRender();
-		$output = $_GET['callback'].'([';
-		$locations = array();
+    
+    public function showAction() {
+        $this->_helper->Layout->disableLayout();
+        $this->_helper->ViewRenderer->setNoRender();
+        $output = $_GET['callback'].'([';
+        $locations = array();
         $table = new Model_DbTable_Problems();
-		$rows = $table->fetchAll();
-		$count = count($rows);
-		$i = 0;
-		foreach($rows as $row) {
-			$output .= '{"templates":["{root}/templates/fb.html"],"icon":"slp",';
-			$output .= '"address":"' . $row['p_address'] . '",';
-			$output .= '"projectTitle":"' . $row['p_name'] . '",';
-			$output .= '"description":"' . $row['p_description'] . '",';
-			$output .= '"userId":"' . $row['fb_user_id'] . '",';
-			$output .= '"lat":' . $row['p_lat'] . ',';
-			$output .= '"lng":' . $row['p_lng'];
-			$output .= '}';
-			$i++;
-			if($i!=$count) {
-				$output .= ',';
-			} 
-		}
-		$output .= ']);';
-		$this->_response->setHeader('Content-Type', 'text/plain')->setBody($output);
-	}
+        $rows = $table->fetchAll();
+        $count = count($rows);
+        $i = 0;
+        foreach ($rows as $row) {
+            $output .= '{"templates":["{root}/templates/fb.html"],"icon":"slp",';
+            $output .= '"place":"'.$row['p_address'].'",';
+            $output .= '"projectTitle":"'.$row['p_name'].'",';
+            $output .= '"description":"'.$row['p_description'].'",';
+            $output .= '"userId":"'.$row['fb_user_id'].'",';
+            $output .= '"lat":'.$row['p_lat'].',';
+            $output .= '"lng":'.$row['p_lng'];
+            $output .= '}';
+            $i++;
+            if ($i != $count) {
+                $output .= ',';
+            }
+        }
+        $output .= ']);';
+        $this->_response->setHeader('Content-Type', 'text/plain')->setBody($output);
+    }
 }
 
