@@ -16,6 +16,8 @@ class ProjectController extends FacebookController {
         $this->view->errors = array();
         $request = $this->getRequest();
         $doit = $request->getParam('do-it');
+		// check permission
+		$this->view->permission = $this->facebook->api_client->users_hasAppPermission('create_event'); 
         if (isset($doit)) {
             // get values
             $title = $request->getParam('title');
