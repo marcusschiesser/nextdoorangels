@@ -4,7 +4,7 @@ require_once 'facebook/facebook.php';
 error_reporting($err);
 class FacebookController extends Zend_Controller_Action {
     public $simulateFb = false;
-    public $useTestApplication = true;
+    public $useTestApplication = false;
     public $apiKey = "39ba65eb321178034ce6abf4055fe99f";
     public $apiSecret = "60f2f411e3b124404dbbf81787198690";
     public $canvasUrl = "http://apps.facebook.com/nextdoorangels";
