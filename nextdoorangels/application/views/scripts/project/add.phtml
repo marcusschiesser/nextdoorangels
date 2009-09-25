@@ -1,18 +1,30 @@
 <?php $this->placeholder('title')->set('NextdoorAngels - Start a new social project'); ?>
 <fb:editor action="?do-it" labelwidth="100">
     <fb:editor-text label="Title" name="title" value=""/>
-    <fb:editor-custom label="Place">
-        <input type="text" name="place" value="" onchange="changePlace(this);"/><img id="map" width="300" height="300" style="border:0;margin:4px 0 0 0;"/>
-    </fb:editor-custom><fb:editor-textarea label="Description" name="description" rows="10"/>
+    <fb:editor-custom label="Street">
+        <input type="text" id="streetEditor" name="street" value="" onchange="changePlace();"/>
+    </fb:editor-custom>
+    <fb:editor-custom label="City">
+        <input type="text" id="cityEditor" name="city" value="" onchange="changePlace();"/>
+		<img id="map" width="300" height="200" style="border:0;margin:4px 0 0 0;"/>
+    </fb:editor-custom>
+	<fb:editor-textarea label="Description" name="description" rows="10"/>
     <fb:editor-buttonset>
         <fb:editor-button value="Start project"/><fb:editor-cancel href="http://apps.facebook.com/nextdoorangels"/>
     </fb:editor-buttonset>
 </fb:editor>
 <script>
 <?php if(!$this->permission) { echo "Facebook.showPermissionDialog('create_event');"; } ?>
-        function changePlace(node){
-            var map = document.getElementById('map');
-            var place = escape(node.getValue());
-            map.setSrc("http://maps.google.com/maps/api/staticmap?center=" + place + "&zoom=14&size=300x300&maptype=roadmap&markers=color:blue|label:S|" + place + "&sensor=false&key=ABQIAAAAquIIHMFUJg94ExRueMgLfBQIu6Cqdu4lKKxoe7OOJi78eqEEHxRsyWCmPNoQeMzdw--XVrPd4alMGA");
+        function changePlace(){
+			var street = document.getElementById('streetEditor').getValue();
+			var city = document.getElementById('cityEditor').getValue();
+			if (street.length > 0) {
+				var place = escape(street + ", " + city);
+			}
+			else {
+				var place = escape(city);
+			}
+			var map = document.getElementById('map');
+            map.setSrc("http://maps.google.com/maps/api/staticmap?center=" + place + "&zoom=14&size=300x200&maptype=roadmap&markers=color:blue|label:S|" + place + "&sensor=false&key=ABQIAAAAquIIHMFUJg94ExRueMgLfBQIu6Cqdu4lKKxoe7OOJi78eqEEHxRsyWCmPNoQeMzdw--XVrPd4alMGA");
         }
 </script>

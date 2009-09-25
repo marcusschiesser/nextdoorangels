@@ -3,7 +3,12 @@ require_once 'FacebookController.php';
 
 class ProjectController extends FacebookController {
 
-    private function lookupAdress($address) {
+    private function lookupAdress($street, $city) {
+    	if(strlen(trim($street))>0) {
+    		$address = $street . ', ' . $city;
+		} else {
+			$address = $city;
+		}
         $httpClient = new Zend_Http_Client("http://maps.google.com/maps/geo");
         $httpClient->setParameterGet("q", urlencode($address))->setParameterGet("key", "ABQIAAAAquIIHMFUJg94ExRueMgLfBRqIoZm6jji5rsO5B8qBiDUbrl1FRQdaeL1jsj3fTRyvOT7EK7euL9jmA")->setParameterGet("sensor", "false")->setParameterGet("output", "json");
         $result = $httpClient->request("GET");
@@ -22,7 +27,8 @@ class ProjectController extends FacebookController {
             // get values
             $title = $request->getParam('title');
             $description = $request->getParam('description');
-            $place = $request->getParam('place');
+            $street = $request->getParam('street');
+            $city = $request->getParam('city');
 			$starttime = new Zend_Date();
             $deadline = new Zend_Date();
             // set $deadline by adding 2 months from now on
@@ -37,20 +43,20 @@ class ProjectController extends FacebookController {
             if (!$descriptionValidator->isValid($description)) {
                 $this->view->errors['Description'] = current($descriptionValidator->getMessages());
             }
-            $placeValidator = new Zend_Validate_StringLength(3);
-            if (!$placeValidator->isValid($place)) {
-                $this->view->errors['Place'] = current($placeValidator->getMessages());
+            $cityValidator = new Zend_Validate_StringLength(3);
+            if (!$cityValidator->isValid($city)) {
+                $this->view->errors['City'] = current($cityValidator->getMessages());
             }
             // do the commit
             if (count($this->view->errors) == 0) {
                 // do geo lookup
-                list($lng, $lat) = $this->lookupAdress($place);
+                list($lng, $lat) = $this->lookupAdress($street, $city);
                 // commit project
-                $event_data = array('name'=>$title, 'city'=>$place, 'start_time'=>$starttime->getTimestamp(), 'end_time'=>$deadline->getTimestamp(), 'category'=>1, 'subcategory'=>1, 'location'=>'Your House', 'host'=>'You');
+                $event_data = array('name'=>$title, 'city'=>$city, 'location'=>$street, 'start_time'=>$starttime->getTimestamp(), 'end_time'=>$deadline->getTimestamp(), 'category'=>2, 'subcategory'=>30, 'host'=>'You');
                 try {
                     $event_id = $this->facebook->api_client->events_create($event_data);
                     $table = new Model_DbTable_Problems();
-                    $table->insert(array('p_name'=>$title, 'p_description'=>$description, 'p_address'=>$place, 'p_lat'=>$lat, 'p_lng'=>$lng, 'fb_user_id'=>$this->fbUserId, 'p_deadline'=>$deadline->toString('YYYY-MM-dd HH:mm:ss'), 'p_created_at'=>$starttime->toString('YYYY-MM-dd HH:mm:ss'), 'fb_event_id'=>$event_id));
+                    $table->insert(array('p_name'=>$title, 'p_description'=>$description, 'p_city'=>$city, 'p_location'=>$street, 'p_lat'=>$lat, 'p_lng'=>$lng, 'fb_user_id'=>$this->fbUserId, 'p_deadline'=>$deadline->toString('YYYY-MM-dd HH:mm:ss'), 'p_created_at'=>$starttime->toString('YYYY-MM-dd HH:mm:ss'), 'fb_event_id'=>$event_id));
                     // inform user & forward to index
                     $this->_helper->FlashMessenger('You successfully created the social project <fb:eventlink eid="'.$event_id.'"/>. Just click on the link and invite some friends. We wish you a lot of success. ');
                 }
@@ -74,7 +80,8 @@ class ProjectController extends FacebookController {
         $i = 0;
         foreach ($rows as $row) {
             $output .= '{"templates":["{root}/templates/fb.html"],"icon":"slp",';
-            $output .= '"place":"'.$row['p_address'].'",';
+            $output .= '"city":"'.$row['p_city'].'",';
+            $output .= '"location":"'.$row['p_location'].'",';
             $output .= '"projectTitle":"'.$row['p_name'].'",';
             $output .= '"description":"'.$row['p_description'].'",';
             $output .= '"userId":"'.$row['fb_user_id'].'",';
