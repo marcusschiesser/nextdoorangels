@@ -4,15 +4,17 @@ require_once 'FacebookController.php';
 class ProjectController extends FacebookController {
 
     private function lookupAdress($street, $city) {
-    	if(strlen(trim($street))>0) {
-    		$address = $street . ', ' . $city;
-		} else {
-			$address = $city;
-		}
+        if (strlen(trim($street)) > 0) {
+            $address = $street.', '.$city;
+        } else {
+            $address = $city;
+        }
+        Zend_Registry::get('logger')->debug("lookup adress: ".$address);
         $httpClient = new Zend_Http_Client("http://maps.google.com/maps/geo");
-        $httpClient->setParameterGet("q", urlencode($address))->setParameterGet("key", "ABQIAAAAquIIHMFUJg94ExRueMgLfBRqIoZm6jji5rsO5B8qBiDUbrl1FRQdaeL1jsj3fTRyvOT7EK7euL9jmA")->setParameterGet("sensor", "false")->setParameterGet("output", "json");
+        $httpClient->setParameterGet("q", $address)->setParameterGet("key", "ABQIAAAAquIIHMFUJg94ExRueMgLfBRqIoZm6jji5rsO5B8qBiDUbrl1FRQdaeL1jsj3fTRyvOT7EK7euL9jmA")->setParameterGet("sensor", "false")->setParameterGet("output", "json");
         $result = $httpClient->request("GET");
         $response = Zend_Json_Decoder::decode($result->getBody(), Zend_Json::TYPE_OBJECT);
+        Zend_Registry::get('logger')->debug("response: ".print_r($response, true));
         return array($response->Placemark[0]->Point->coordinates[0], $response->Placemark[0]->Point->coordinates[1]);
     }
     
@@ -29,7 +31,7 @@ class ProjectController extends FacebookController {
             $description = $request->getParam('description');
             $street = $request->getParam('street');
             $city = $request->getParam('city');
-			$starttime = new Zend_Date();
+            $starttime = new Zend_Date();
             $deadline = new Zend_Date();
             // set $deadline by adding 2 months from now on
             $deadline->addMonth(2);
@@ -43,28 +45,36 @@ class ProjectController extends FacebookController {
             if (!$descriptionValidator->isValid($description)) {
                 $this->view->errors['Description'] = current($descriptionValidator->getMessages());
             }
+            $streetValidator = new Zend_Validate_StringLength(5);
+            if (!$streetValidator->isValid($street)) {
+                $this->view->errors['Street'] = current($streetValidator->getMessages());
+            }
             $cityValidator = new Zend_Validate_StringLength(3);
             if (!$cityValidator->isValid($city)) {
                 $this->view->errors['City'] = current($cityValidator->getMessages());
             }
-            // do the commit
-            if (count($this->view->errors) == 0) {
-                // do geo lookup
-                list($lng, $lat) = $this->lookupAdress($street, $city);
-                // commit project
-                $event_data = array('name'=>$title, 'city'=>$city, 'location'=>$street, 'start_time'=>$starttime->getTimestamp(), 'end_time'=>$deadline->getTimestamp(), 'category'=>2, 'subcategory'=>30, 'host'=>'You');
-                try {
-                    $event_id = $this->facebook->api_client->events_create($event_data);
-                    $table = new Model_DbTable_Problems();
-                    $table->insert(array('p_name'=>$title, 'p_description'=>$description, 'p_city'=>$city, 'p_location'=>$street, 'p_lat'=>$lat, 'p_lng'=>$lng, 'fb_user_id'=>$this->fbUserId, 'p_deadline'=>$deadline->toString('YYYY-MM-dd HH:mm:ss'), 'p_created_at'=>$starttime->toString('YYYY-MM-dd HH:mm:ss'), 'fb_event_id'=>$event_id));
-                    // inform user & forward to index
-                    $this->_helper->FlashMessenger('You successfully created the social project <fb:eventlink eid="'.$event_id.'"/>. Just click on the link and invite some friends. We wish you a lot of success. ');
+            // do geo lookup & validate address
+            list($lng, $lat) = $this->lookupAdress($street, $city);
+            if (!(isset($lng) && isset($lat))) {
+                $this->_helper->FlashMessenger(array('error'=>'The address can not be found. Please check street and city.'));
+            } else {
+                // do the commit
+                if (count($this->view->errors) == 0) {
+                    try {
+                        // commit project
+                        $event_data = array('name'=>$title, 'city'=>$city, 'location'=>$street, 'start_time'=>$starttime->getTimestamp(), 'end_time'=>$deadline->getTimestamp(), 'category'=>2, 'subcategory'=>30, 'host'=>'You');
+                        $event_id = $this->facebook->api_client->events_create($event_data);
+                        $table = new Model_DbTable_Problems();
+                        $table->insert(array('p_name'=>$title, 'p_description'=>$description, 'p_city'=>$city, 'p_location'=>$street, 'p_lat'=>$lat, 'p_lng'=>$lng, 'fb_user_id'=>$this->fbUserId, 'p_deadline'=>$deadline->toString('YYYY-MM-dd HH:mm:ss'), 'p_created_at'=>$starttime->toString('YYYY-MM-dd HH:mm:ss'), 'fb_event_id'=>$event_id));
+                        // inform user & forward to index
+                        $this->_helper->FlashMessenger('You successfully created the social project <fb:eventlink eid="'.$event_id.'"/>. Just click on the link and invite some friends. We wish you a lot of success. ');
+                    }
+                    catch(Exception $e) {
+                        $this->_helper->FlashMessenger(array('error'=>'There has been an error creating your social project. Please try again later.'));
+                        Zend_Registry::get('logger')->err($e->getMessage());
+                    }
+                    return $this->_forward('index', 'index');
                 }
-                catch(Exception $e) {
-                    $this->_helper->FlashMessenger(array('error'=>'There has been an error creating your social project. Please try again later.'));
-                    Zend_Registry::get('logger')->err($e->getMessage());
-                }
-                return $this->_forward('index', 'index');
             }
         }
     }
