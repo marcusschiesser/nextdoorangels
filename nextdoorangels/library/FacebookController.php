@@ -3,31 +3,26 @@ $err = error_reporting(E_ERROR);
 require_once 'facebook/facebook.php';
 error_reporting($err);
 class FacebookController extends Zend_Controller_Action {
-    public $simulateFb = false;
-    public $useTestApplication = false;
-    public $apiKey = "39ba65eb321178034ce6abf4055fe99f";
-    public $apiSecret = "60f2f411e3b124404dbbf81787198690";
-    public $canvasUrl = "http://apps.facebook.com/nextdoorangels";
-    public $testApiKey = '28c...b05';
-    public $testApiSecret = 'df6...3fb5';
-    public $testCanvasUrl = "http://apps.facebook.com/myfbapptest";
+    private $simulateFb;
+    private $canvasUrl;
     public $fbUserId = "1234567";
     /**
      * Facebook api
      * @var Facebook
      */
     protected $facebook;
+	
     public function init() {
+    	$allConfig = $this->getInvokeArg('bootstrap')->getOptions();
+		$config = $allConfig['facebook'];
+		$this->canvasUrl = $config['canvasUrl'];
+		$this->simulateFb = $config['simulateFb'] ? $config['simulateFb'] : false;
         if ($this->simulateFb) {
             Zend_Session::start();
             parent::init();
         } else {
-            if ($this->useTestApplication) {
-                $this->apiKey = $this->testApiKey;
-                $this->apiSecret = $this->testApiSecret;
-                $this->canvasUrl = $this->testCanvasUrl;
-            }
-            $this->facebook = new Facebook($this->apiKey, $this->apiSecret);
+			$apiSecret = $config['apiSecret'] ? $config['apiSecret'] : getenv('FB_APISECRET');
+            $this->facebook = new Facebook($config['apiKey'], $apiSecret);
             $session_key = md5($this->facebook->api_client->session_key);
             if (!Zend_Session::isStarted()) {
                 Zend_Session::setId($session_key);
@@ -49,5 +44,4 @@ class FacebookController extends Zend_Controller_Action {
         }
     }
 }
-header('Content-Type: text/html; charset=UTF-8');
 ?>
