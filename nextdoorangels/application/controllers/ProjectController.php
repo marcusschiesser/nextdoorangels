@@ -31,6 +31,7 @@ class ProjectController extends FacebookController {
             $description = $request->getParam('description');
             $street = $request->getParam('street');
             $city = $request->getParam('city');
+			$this->view->params = $request->getParams();
             $starttime = new Zend_Date();
             $deadline = new Zend_Date();
             // set $deadline by adding 2 months from now on

@@ -1,20 +1,22 @@
 <?php $this->placeholder('title')->set('NextdoorAngels - Start a new social project'); ?>
 <fb:editor action="?do-it" labelwidth="100">
-    <fb:editor-text label="Title" name="title" value=""/>
+    <fb:editor-text label="Title" name="title" value="<?php echo $this->escape($this->params['title']) ?>"/>
     <fb:editor-custom label="Street">
-        <input type="text" id="streetEditor" name="street" value="" onchange="changePlace();"/>
+        <input type="text" id="streetEditor" name="street" value="<?php echo $this->escape($this->params['street']) ?>" onchange="changePlace();"/>
     </fb:editor-custom>
     <fb:editor-custom label="City">
-        <input type="text" id="cityEditor" name="city" value="" onchange="changePlace();"/>
+        <input type="text" id="cityEditor" name="city" value="<?php echo $this->escape($this->params['city']) ?>" onchange="changePlace();"/>
 		<img id="map" width="300" height="200" style="border:0;margin:4px 0 0 0;"/>
     </fb:editor-custom>
-	<fb:editor-textarea label="Description" name="description" rows="10"/>
+	<fb:editor-textarea label="Description" name="description" rows="10">
+		 <?php echo $this->escape($this->params['description']) ?>
+	</fb:editor-textarea>
     <fb:editor-buttonset>
         <fb:editor-button value="Start project"/><fb:editor-cancel href="http://apps.facebook.com/nextdoorangels"/>
     </fb:editor-buttonset>
 </fb:editor>
 <script>
-<?php if(!$this->permission) { echo "Facebook.showPermissionDialog('create_event');"; } ?>
+<?php if(!$this->permission) { echo "Facebook.showPermissionDialog('create_event', function(permissions) { if(permissions==='') { document.setLocation('http://apps.facebook.com/nextdoorangels'); } });"; } ?>
         function changePlace(){
 			var street = document.getElementById('streetEditor').getValue();
 			var city = document.getElementById('cityEditor').getValue();
