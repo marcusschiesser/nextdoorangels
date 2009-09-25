@@ -18,13 +18,10 @@
         function changePlace(){
 			var street = document.getElementById('streetEditor').getValue();
 			var city = document.getElementById('cityEditor').getValue();
-			if (street.length > 0) {
+			if (street.length > 0 && city.length > 0) {
 				var place = escape(street + ", " + city);
+				var map = document.getElementById('map');
+    	        map.setSrc("http://maps.google.com/maps/api/staticmap?center=" + place + "&zoom=14&size=300x200&maptype=roadmap&markers=color:blue|label:S|" + place + "&sensor=false&key=ABQIAAAAquIIHMFUJg94ExRueMgLfBQIu6Cqdu4lKKxoe7OOJi78eqEEHxRsyWCmPNoQeMzdw--XVrPd4alMGA");
 			}
-			else {
-				var place = escape(city);
-			}
-			var map = document.getElementById('map');
-            map.setSrc("http://maps.google.com/maps/api/staticmap?center=" + place + "&zoom=14&size=300x200&maptype=roadmap&markers=color:blue|label:S|" + place + "&sensor=false&key=ABQIAAAAquIIHMFUJg94ExRueMgLfBQIu6Cqdu4lKKxoe7OOJi78eqEEHxRsyWCmPNoQeMzdw--XVrPd4alMGA");
         }
 </script>
