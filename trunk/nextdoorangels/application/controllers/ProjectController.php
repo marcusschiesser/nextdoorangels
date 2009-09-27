@@ -17,6 +17,10 @@ class ProjectController extends FacebookController {
         Zend_Registry::get('logger')->debug("response: ".print_r($response, true));
         return array($response->Placemark[0]->Point->coordinates[0], $response->Placemark[0]->Point->coordinates[1]);
     }
+	
+	public function indexAction() {
+		
+	}
     
     public function addAction() {
         $this->requireLogin();
@@ -81,7 +85,15 @@ class ProjectController extends FacebookController {
     }
     
     public function showAction() {
-        $this->_helper->Layout->disableLayout();
+
+    }
+	
+	public function inviteAction() {
+		
+	}
+	
+	public function listAction() {
+		$this->_helper->Layout->disableLayout();
         $this->_helper->ViewRenderer->setNoRender();
         $output = $_GET['callback'].'([';
         $locations = array();
@@ -107,6 +119,6 @@ class ProjectController extends FacebookController {
         }
         $output .= ']);';
         $this->_response->setHeader('Content-Type', 'text/plain')->setBody($output);
-    }
+	}
 }
 
