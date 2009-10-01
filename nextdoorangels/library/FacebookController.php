@@ -12,8 +12,12 @@ class FacebookController extends Zend_Controller_Action {
      */
     protected $facebook;
 	
+	protected function getConfig() {
+    	return $this->getInvokeArg('bootstrap')->getOptions();
+	}
+	
     public function init() {
-    	$allConfig = $this->getInvokeArg('bootstrap')->getOptions();
+    	$allConfig = $this->getConfig();
 		$config = $allConfig['facebook'];
 		$this->canvasUrl = $config['canvasUrl'];
 		$this->view->canvasUrl = $this->canvasUrl;
