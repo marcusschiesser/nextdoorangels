@@ -1,24 +1,14 @@
 <?php $this->placeholder('title')->set('NextdoorAngels'); ?>
 <fb:dashboard>
-    <fb:create-button href="http://apps.facebook.com/devnextdoorangels/friends/invite">
+    <fb:create-button href="<?php echo $this->canvasUrl ?>friends/invite">
         Invite friends
     </fb:create-button>
-    <fb:create-button href="http://apps.facebook.com/devnextdoorangels/project/add">
+    <fb:create-button href="<?php echo $this->canvasUrl ?>project/add">
         Start a new social project
     </fb:create-button>
 </fb:dashboard>
 <h1 style="font-size:18px; color:green;">this is NextDoorAngels.org</h1>
 <h2><?php echo $this->shortdescription; ?></h2>
-<!--
-<div style="width:500px;height:300px;background:#ccc;">
-<p>
-<?php echo $this->fb_name; ?> aus <?php echo $this->address; ?> hat folgendes Problem eingestellt:
-</p>
-<p>
-<h3><?php echo $this->name; ?></h3>
-<?php echo $this->desc; ?>
-</p>
-</div>
---><b>Want to solve social problems in your neighborhood?</b>
-<fb:iframe frameborder="0" marginwidth="0" marginheight="0" border="0" style="border:0;margin:0;width:750px;height:600px;" src="http://www.geowidget.de/geowidget-js/index.html?root=customers/ngo" scrolling="no" allowtransparency="true">
+<b>Want to solve social problems in your neighborhood?</b>
+<fb:iframe frameborder="0" marginwidth="0" marginheight="0" border="0" style="border:0;margin:0;width:750px;height:600px;" src="http://www.geowidget.de/geowidget-js/index.html?root=customers/ngo/dev" scrolling="no" allowtransparency="true">
 </fb:iframe>

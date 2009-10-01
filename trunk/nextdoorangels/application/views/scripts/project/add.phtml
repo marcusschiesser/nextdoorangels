@@ -12,11 +12,11 @@
 		 <?php echo $this->escape($this->params['description']) ?>
 	</fb:editor-textarea>
     <fb:editor-buttonset>
-        <fb:editor-button value="Start project"/><fb:editor-cancel href="http://apps.facebook.com/nextdoorangels"/>
+        <fb:editor-button value="Start project"/><fb:editor-cancel href="<?php echo $this->canvasUrl ?>"/>
     </fb:editor-buttonset>
 </fb:editor>
 <script>
-<?php if(!$this->permission) { echo "Facebook.showPermissionDialog('create_event', function(permissions) { if(permissions==='') { document.setLocation('http://apps.facebook.com/nextdoorangels'); } });"; } ?>
+<?php if(!$this->permission) { echo "Facebook.showPermissionDialog('create_event', function(permissions) { if(permissions==='') { document.setLocation('".$this->canvasUrl."'); } });"; } ?>
         function changePlace(){
 			var street = document.getElementById('streetEditor').getValue();
 			var city = document.getElementById('cityEditor').getValue();
