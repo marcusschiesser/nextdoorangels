@@ -16,6 +16,8 @@ class FacebookController extends Zend_Controller_Action {
     	$allConfig = $this->getInvokeArg('bootstrap')->getOptions();
 		$config = $allConfig['facebook'];
 		$this->canvasUrl = $config['canvasUrl'];
+		$this->view->canvasUrl = $this->canvasUrl;
+		$this->view->realUrl = $config['realUrl'];
 		$this->simulateFb = $config['simulateFb'] ? $config['simulateFb'] : false;
         if ($this->simulateFb) {
             Zend_Session::start();

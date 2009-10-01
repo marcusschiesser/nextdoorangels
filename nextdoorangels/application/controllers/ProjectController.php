@@ -18,10 +18,6 @@ class ProjectController extends FacebookController {
         return array($response->Placemark[0]->Point->coordinates[0], $response->Placemark[0]->Point->coordinates[1]);
     }
 	
-	public function indexAction() {
-		
-	}
-    
     public function addAction() {
         $this->requireLogin();
         $this->view->errors = array();
@@ -84,14 +80,6 @@ class ProjectController extends FacebookController {
         }
     }
     
-    public function showAction() {
-
-    }
-	
-	public function inviteAction() {
-		
-	}
-	
 	public function listAction() {
 		$this->_helper->Layout->disableLayout();
         $this->_helper->ViewRenderer->setNoRender();
