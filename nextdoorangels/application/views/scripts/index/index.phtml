@@ -1,13 +1,21 @@
-<?php $this->placeholder('title')->set('NextdoorAngels'); ?>
-<fb:dashboard>
-    <fb:create-button href="<?php echo $this->canvasUrl ?>friends/invite">
-        Invite friends
-    </fb:create-button>
-    <fb:create-button href="<?php echo $this->canvasUrl ?>project/add">
-        Start a new social project
-    </fb:create-button>
-</fb:dashboard>
-<h1 style="font-size:18px; color:green;">this is NextDoorAngels.org</h1>
+<div style="width:100%;margin-bottom:20px;">
+	<a href="<?php echo $this->canvasUrl ?>about/" style="font-size:20px;margin: 0 50px 0 200px;">Learn More</a>
+	<a href="<?php echo $this->canvasUrl ?>project/add" style="font-size:20px;margin: 0 50px 0 50px;">Add A Project</a>
+</div>
+<div>
+	<div style="float:left;width:10%;">
+		<fb:profile-pic uid="<?php echo $this->userId; ?>" facebook-logo="false" linked="false"></fb:profile-pic>
+	</div>
+	<div style="float:left;width:90%">
+		<h1 style="font-size:18px;">Welcome <fb:name uid="<?php echo $this->userId; ?>" useyou="false" capitalize="true" firstnameonly="true" linked="false" /></h1>
+		<p>
+			Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+		</p>		
+	</div>	
+	<div style="clear:both;"></div>
+</div>
+
+
 <h2><?php echo $this->shortdescription; ?></h2>
 <b>Want to solve social problems in your neighborhood?</b>
 <fb:iframe frameborder="0" marginwidth="0" marginheight="0" border="0" style="border:0;margin:0;width:750px;height:600px;" src="http://www.geowidget.de/geowidget-js/index.html?root=<?php echo $this->mapRoot ?>" scrolling="no" allowtransparency="true">
