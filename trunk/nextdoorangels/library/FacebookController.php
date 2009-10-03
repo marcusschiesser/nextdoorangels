@@ -6,6 +6,7 @@ class FacebookController extends Zend_Controller_Action {
     private $simulateFb;
     private $canvasUrl;
     public $fbUserId = "1234567";
+	
     /**
      * Facebook api
      * @var Facebook
