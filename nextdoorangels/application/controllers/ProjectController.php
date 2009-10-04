@@ -96,7 +96,7 @@ class ProjectController extends FacebookController {
             $output .= '"projectTitle":"'.$row['p_name'].'",';
             $output .= '"description":"'.$row['p_description'].'",';
             $output .= '"userId":"'.$row['fb_user_id'].'",';
-            $output .= '"joinURL":"http://www.facebook.com/event.php?eid='.$row['fb_event_id'].'",';
+            $output .= '"joinURL":"javascript:window.top.location = \'http://www.facebook.com/event.php?eid='.$row['fb_event_id'].'\';",';
             $output .= '"lat":'.$row['p_lat'].',';
             $output .= '"lng":'.$row['p_lng'];
             $output .= '}';
