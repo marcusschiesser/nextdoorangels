@@ -73,6 +73,7 @@ class ProjectController extends FacebookController {
                     catch(Exception $e) {
                         $this->_helper->FlashMessenger(array('error'=>'There has been an error creating your social project. Please try again later.'));
                         Zend_Registry::get('logger')->err($e->getMessage());
+						// TODO if($e->getMessage()=='Unknown city') {} 'New-York'
                     }
                     return $this->_forward('index', 'index');
                 }
