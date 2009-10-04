@@ -94,6 +94,7 @@ class ProjectController extends FacebookController {
             $output .= '{"templates":["{root}/templates/fb.html"],"icon":"slp",';
             $output .= '"city":"'.$row['p_city'].'",';
             $output .= '"location":"'.$row['p_location'].'",';
+            $output .= '"address":"'.$row['p_location'].', '.$row['p_city'].'",';
             $output .= '"projectTitle":"'.$row['p_name'].'",';
             $output .= '"description":"'.$row['p_description'].'",';
             $output .= '"userId":"'.$row['fb_user_id'].'",';
