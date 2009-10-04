@@ -13,7 +13,8 @@ class InfoController extends FacebookController {
     }
 	
 	public function aboutAction() {
-		
+		$locale = new Zend_Locale();
+		$this->view->language = $locale->getLanguage();
 	}
 	
 	public function involveAction() {
