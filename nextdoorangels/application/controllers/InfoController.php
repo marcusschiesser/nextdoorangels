@@ -13,8 +13,9 @@ class InfoController extends FacebookController {
     }
 	
 	public function aboutAction() {
-		$locale = new Zend_Locale();
-		$this->view->language = $locale->getLanguage();
+		$this->requireLogin();
+		$userInfo = $this->facebook->api_client->users_getInfo( $this->fbUserId, 'locale' );
+		$this->view->language = substr($userInfo[0]['locale'], 0, 2);
 	}
 	
 	public function involveAction() {
