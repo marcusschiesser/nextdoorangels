@@ -9,12 +9,12 @@ class ProjectController extends FacebookController {
         } else {
             $address = $city;
         }
-        Zend_Registry::get('logger')->debug("lookup adress: ".$address);
+        //Zend_Registry::get('logger')->debug("lookup adress: ".$address);
         $httpClient = new Zend_Http_Client("http://maps.google.com/maps/geo");
         $httpClient->setParameterGet("q", $address)->setParameterGet("key", "ABQIAAAAquIIHMFUJg94ExRueMgLfBRqIoZm6jji5rsO5B8qBiDUbrl1FRQdaeL1jsj3fTRyvOT7EK7euL9jmA")->setParameterGet("sensor", "false")->setParameterGet("output", "json");
         $result = $httpClient->request("GET");
         $response = Zend_Json_Decoder::decode($result->getBody(), Zend_Json::TYPE_OBJECT);
-        Zend_Registry::get('logger')->debug("response: ".print_r($response, true));
+        //Zend_Registry::get('logger')->debug("response: ".print_r($response, true));
         return array($response->Placemark[0]->Point->coordinates[0], $response->Placemark[0]->Point->coordinates[1]);
     }
 	
