@@ -1,22 +1,39 @@
-<div style="width:100%;margin-bottom:20px;">
-	<a href="<?php echo $this->canvasUrl ?>about/" style="font-size:20px;margin: 0 50px 0 200px;">Learn More</a>
-	<a href="<?php echo $this->canvasUrl ?>project/add" style="font-size:20px;margin: 0 50px 0 50px;">Add A Project</a>
-</div>
-<div>
+<div style="margin-top:20px;">
 	<div style="float:left;width:10%;">
 		<fb:profile-pic uid="<?php echo $this->userId; ?>" facebook-logo="false" linked="false"></fb:profile-pic>
 	</div>
-	<div style="float:left;width:90%">
+	<div style="float:left;width:60%">
 		<h1 style="font-size:18px;">Welcome <fb:name uid="<?php echo $this->userId; ?>" useyou="false" capitalize="true" firstnameonly="true" linked="false" /></h1>
-		<p>
-			Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-		</p>		
-	</div>	
+		<fb:if-is-app-user uid="<?php echo $this->userId; ?>">
+				Nice to see you again! Please <b>start by searching for local problems</b> and issues. If you know a local problem that needs attention, please <a href="<?php echo $this->canvasUrl; ?>project/add">add this project</a>.
+			<fb:else>
+				<p>
+					NextDoorAngels lets you find local projects to help others. You can organize an event to solve these social issues by connecting to people in your neighborhood. 
+				</p>
+			</fb:else> 
+		</fb:if-is-app-user>	
+	</div>
+	<div style="width:30%;float:left;">
+		<div style="margin-left:20px;">
+			<img style="width:100px;" src="http://nextdoorangels.org/img/nda_logo_100.jpg" />
+			<ul>
+				<li><a style="font-size:16px;" href="<?php echo $this->canvasUrl ?>info/about">Learn More</a></li>
+				<li><a style="font-size:16px;" href="<?php echo $this->canvasUrl ?>project/add">Add A Project</a></li>
+			</ul>
+		</div>
+
+	</div>
 	<div style="clear:both;"></div>
 </div>
-
-
-<h2><?php echo $this->shortdescription; ?></h2>
-<b>Want to solve social problems in your neighborhood?</b>
 <fb:iframe frameborder="0" marginwidth="0" marginheight="0" border="0" style="border:0;margin:0;width:750px;height:600px;" src="http://www.geowidget.de/geowidget-js/index.html?root=<?php echo $this->mapRoot ?>" scrolling="no" allowtransparency="true">
 </fb:iframe>
+
+<div>
+	<h2>Get involved:</h2>
+	<p>
+		You can also help the NextDoorAngels project by telling your friends and family about it, by <a href="http://www.facebook.com/pages/NextdoorAngels/135340618182" target="_blank">becoming a fan</a> and following us on <a href="http://twitter.com/nextdoorangels" target="_blank">twitter</a>.
+	</p>
+	<p>
+		You can start by looking for existing problems in your surroundings and help to fix these problems by organizing events, inviting local friends to help solve local problems.
+	</p>
+</div>
