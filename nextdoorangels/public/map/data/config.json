@@ -1,0 +1,41 @@
+{"infoText":"Please enter your location and find social projects in your neighborhood",
+"locationSelectorTemplate":"{root}/templates/locationSelector.html",
+"bodyTemplate":"{root}/templates/body.html",
+"locationFilterTemplate":"{root}/templates/locationFilter.html",
+"directionsTemplate":"{root}/templates/distance.html",
+"locations": "/project/list",
+    "bgColorAsString":"#ffffff",
+    "layout":
+    {
+        "border":
+        {
+            "color":"#ffffff",
+            "size":1
+        },
+        "mapType":"PHYSICAL_MAP_TYPE"
+    },
+    "icons":
+    [
+        {
+                "id": "slp",
+                "image": "icon/icon_concern.png",
+                "width": 30,
+                "height": 30,
+								"cluster":{
+														"image":"icon/icon_concern_numbered.png",
+														"width":30,
+														"height":30,
+														"anchorX":16,
+														"anchorY":2,
+														"color":"#000000",
+														"fontSize":9
+													}
+        }
+    ],
+    "features":
+    {
+        "showRoute":true,
+        "showSearch":true,
+        "showZoom":true
+    }
+}
