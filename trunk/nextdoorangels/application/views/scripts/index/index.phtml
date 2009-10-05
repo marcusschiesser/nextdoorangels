@@ -1,9 +1,51 @@
+<?php if($this->language == 'de') { ?>
+
 <div style="margin-top:20px;">
 	<div style="float:left;width:10%;">
 		<fb:profile-pic uid="<?php echo $this->userId; ?>" facebook-logo="false" linked="false"></fb:profile-pic>
 	</div>
 	<div style="float:left;width:60%">
-		<h1 style="font-size:18px;">Welcome <fb:name uid="<?php echo $this->userId; ?>" useyou="false" capitalize="true" firstnameonly="true" linked="false" /></h1>
+		<h1 style="font-size:18px;">Willkommen <fb:name uid="<?php echo $this->userId; ?>" useyou="false" capitalize="true" firstnameonly="true" linked="false" />!</h1>
+		<fb:if-is-app-user uid="<?php echo $this->userId; ?>">
+				Schön Dich wieder zu sehen! Hier kannst Du <b>nach lokalen Projekte suchen</b>. Wenn Du selbst ein lokales Projekt ins Leben rufen möchtest, <a href="<?php echo $this->canvasUrl; ?>project/add">füge ein soziales Projekt hinzu</a>.
+			<fb:else>
+				<p>
+					Mit NextdoorAngels kannst Du lokale Projekte in Deiner Umgebung, Deiner eigenen Nachbarschaft suchen und sie unterstützen. 
+				</p>
+			</fb:else> 
+		</fb:if-is-app-user>	
+	</div>
+	<div style="width:30%;float:left;">
+		<div style="margin-left:20px;">
+			<img style="width:100px;" src="http://nextdoorangels.org/img/nda_logo_100.jpg" />
+			<ul>
+				<li><a style="font-size:12px;" href="<?php echo $this->canvasUrl ?>info/about">Über uns</a></li>
+				<li><a style="font-size:12px;" href="<?php echo $this->canvasUrl ?>project/add">Projekt hinzufügen</a></li>
+			</ul>
+		</div>
+
+	</div>
+	<div style="clear:both;"></div>
+</div>
+<fb:iframe frameborder="0" width="750" height="600" src="http://www.geowidget.de/geowidget-js/<?php echo $this->mapRoot ?>" scrolling="no">
+</fb:iframe>
+
+<div>
+	<h2>Mach mit!</h2>
+	<p>
+		Empfehle NextdoorAngels an Deine Freunde und Verwandte. Je mehr Menschen mitmachen umso mehr wird ihnen auch geholfen.
+		<br>Werde <a href="http://www.facebook.com/pages/NextdoorAngels/135340618182" target="_blank">Fan von NextdoorAngels</a> und folge uns auf <a href="http://twitter.com/nextdoorangels" target="_blank">Twitter</a>.
+	</p>
+</div>
+
+<?php } else { ?>
+
+<div style="margin-top:20px;">
+	<div style="float:left;width:10%;">
+		<fb:profile-pic uid="<?php echo $this->userId; ?>" facebook-logo="false" linked="false"></fb:profile-pic>
+	</div>
+	<div style="float:left;width:60%">
+		<h1 style="font-size:18px;">Welcome <fb:name uid="<?php echo $this->userId; ?>" useyou="false" capitalize="true" firstnameonly="true" linked="false" />!</h1>
 		<fb:if-is-app-user uid="<?php echo $this->userId; ?>">
 				Nice to see you again! Please <b>start by searching for local problems</b> and issues. If you know a local problem that needs attention, please <a href="<?php echo $this->canvasUrl; ?>project/add">add this project</a>.
 			<fb:else>
@@ -17,8 +59,8 @@
 		<div style="margin-left:20px;">
 			<img style="width:100px;" src="http://nextdoorangels.org/img/nda_logo_100.jpg" />
 			<ul>
-				<li><a style="font-size:16px;" href="<?php echo $this->canvasUrl ?>info/about">Learn More</a></li>
-				<li><a style="font-size:16px;" href="<?php echo $this->canvasUrl ?>project/add">Add A Project</a></li>
+				<li><a style="font-size:12px;" href="<?php echo $this->canvasUrl ?>info/about">About Us</a></li>
+				<li><a style="font-size:12px;" href="<?php echo $this->canvasUrl ?>project/add">Add A Project</a></li>
 			</ul>
 		</div>
 
@@ -37,3 +79,5 @@
 		You can start by looking for existing problems in your surroundings and help to fix these problems by organizing events, inviting local friends to help solve local problems.
 	</p>
 </div>
+
+<?php } 
