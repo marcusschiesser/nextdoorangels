@@ -71,9 +71,13 @@ class ProjectController extends FacebookController {
                         $this->_helper->FlashMessenger('You successfully created the social project <fb:eventlink eid="'.$event_id.'"/>. Just click on the link and invite some friends. We wish you a lot of success. ');
                     }
                     catch(Exception $e) {
-                        $this->_helper->FlashMessenger(array('error'=>'There has been an error creating your social project. Please try again later.'));
-                        Zend_Registry::get('logger')->err($e->getMessage());
-						// TODO if($e->getMessage()=='Unknown city') {} 'New-York'
+						if($e->getMessage()=='Unknown city') {
+			                $this->view->errors['City'] = ': ' . $city . ' is unknown in Facebook. Please try a different name.';
+							return;
+						} else {
+                        	$this->_helper->FlashMessenger(array('error'=>'There has been an error creating your social project. Please try again later.'));
+                        	Zend_Registry::get('logger')->err($e->getMessage());
+						}
                     }
                     return $this->_forward('index', 'index');
                 }
