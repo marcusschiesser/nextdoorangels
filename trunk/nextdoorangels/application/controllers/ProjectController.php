@@ -88,30 +88,23 @@ class ProjectController extends FacebookController {
 	public function listAction() {
 		$this->_helper->Layout->disableLayout();
         $this->_helper->ViewRenderer->setNoRender();
-        $output = $_GET['callback'].'([';
-        $locations = array();
         $table = new Model_DbTable_Problems();
         $rows = $table->fetchAll();
-        $count = count($rows);
-        $i = 0;
+		$values = array();
         foreach ($rows as $row) {
-            $output .= '{"templates":["{root}/templates/fb.html"],"icon":"slp",';
-            $output .= '"city":"'.$row['p_city'].'",';
-            $output .= '"location":"'.$row['p_location'].'",';
-            $output .= '"address":"'.$row['p_location'].', '.$row['p_city'].'",';
-            $output .= '"projectTitle":"'.$row['p_name'].'",';
-            $output .= '"description":"'.$row['p_description'].'",';
-            $output .= '"userId":"'.$row['fb_user_id'].'",';
-            $output .= '"joinURL":"javascript:window.top.location = \'http://www.facebook.com/event.php?eid='.$row['fb_event_id'].'\';",';
-            $output .= '"lat":'.$row['p_lat'].',';
-            $output .= '"lng":'.$row['p_lng'];
-            $output .= '}';
-            $i++;
-            if ($i != $count) {
-                $output .= ',';
-            }
+        	$value = array("templates" => array("{root}/templates/fb.html"), "icon" => "slp",
+            "city" => htmlspecialchars($row['p_city']),
+            "location" => htmlspecialchars($row['p_location']),
+            "address" => htmlspecialchars($row['p_location'].', '.$row['p_city']),
+            "projectTitle" => htmlspecialchars($row['p_name']),
+            "description" => nl2br(htmlspecialchars($row['p_description'])),
+            "userId" => $row['fb_user_id'],
+            "joinURL" => "javascript:window.top.location = 'http://www.facebook.com/event.php?eid=".$row['fb_event_id']."';",
+            "lat" => $row['p_lat'],
+            "lng" => $row['p_lng']);
+			array_push($values, $value);
         }
-        $output .= ']);';
+        $output = $_GET['callback'].'('.Zend_Json::encode($values).');';
         $this->_response->setHeader('Content-Type', 'text/plain')->setBody($output);
 	}
 }
