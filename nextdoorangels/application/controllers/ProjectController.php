@@ -74,6 +74,8 @@ class ProjectController extends FacebookController {
 						if($e->getMessage()=='Unknown city') {
 			                $this->view->errors['City'] = ': ' . $city . ' is unknown in Facebook. Please try a different name.';
 							return;
+						} elseif(strpos($e->getMessage(),'Integrity constraint violation')!==FALSE) {
+                        	$this->_helper->FlashMessenger(array('error'=>'You tried to create a project at '.$street.', '.$city.' - the same location of an existing project. Probably you just reloaded the page, and everything is fine. If not, please create a project at another location.'));
 						} else {
                         	$this->_helper->FlashMessenger(array('error'=>'There has been an error creating your social project. Please try again later.'));
                         	Zend_Registry::get('logger')->err($e->getMessage());
