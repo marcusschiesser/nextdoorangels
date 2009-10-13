@@ -2,8 +2,8 @@
 "locationSelectorTemplate":"{root}/templates/locationSelector.html",
 "bodyTemplate":"{root}/templates/body.html",
 "locationFilterTemplate":"{root}/templates/locationFilter.html",
+"locationSummaryItemTemplate":"{root}/templates/locationSummaryItem.html",
 "locationSummaryTemplate":"{root}/templates/locationSummary.html",
-"locationSummaryHeader":"<div class='section'><b>Multiple projects in this region.</b><br/>Please choose one.</div>",
 "directionsTemplate":"{root}/templates/distance.html",
 "clusters":[{
 														"image":"icon/icon_concern_numbered.png",
