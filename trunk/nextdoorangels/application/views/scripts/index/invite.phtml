@@ -1,0 +1,4 @@
+<fb:request-form action="<?php echo $this->canvasUrl ?>index/doInvite" method="post" 
+type="NextdoorAngels" content="<? echo htmlentities($this->content,ENT_COMPAT,'UTF-8'); ?>">  
+<fb:multi-friend-selector max="35" actiontext="Here are your friends who are not on NextdoorAngels yet. Invite whoever you want - it's free!" exclude_ids="<? echo $this->friends; ?>" />
+</fb:request-form> 
