@@ -1,18 +1,23 @@
-<?php $this->placeholder('title')->set('NextdoorAngels - Start a new social project'); ?>
+<?php $this->placeholder('title')->set('NextdoorAngels - Ein soziales Event anlegen'); ?>
 <fb:editor action="?do-it" labelwidth="100">
-    <fb:editor-text label="Title" name="title" value="<?php echo $this->escape($this->params['title']) ?>"/>
-    <fb:editor-custom label="Street">
+    <fb:editor-text name="title" value="<?php echo $this->escape($this->params['title']) ?>">
+    	<fb:fbml-attribute name="label"><fb:intl>Titel</fb:intl></fb:fbml-attribute> 
+	</fb:editor-text>
+    <fb:editor-custom>
+    	<fb:fbml-attribute name="label"><fb:intl>Straße</fb:intl></fb:fbml-attribute> 
         <input type="text" id="streetEditor" name="street" value="<?php echo $this->escape($this->params['street']) ?>" onchange="changePlace();"/>
     </fb:editor-custom>
-    <fb:editor-custom label="City">
+    <fb:editor-custom label="Stadt">
         <input type="text" id="cityEditor" name="city" value="<?php echo $this->escape($this->params['city']) ?>" onchange="changePlace();"/>
 		<img id="map" width="300" height="200" style="border:0;margin:4px 0 0 0;"/>
     </fb:editor-custom>
+	<fb:editor-date label="Datum" <?php if(isset($this->date)) { echo 'value="'.$this->date.'"'; } ?> />
+	<fb:editor-time <?php if(isset($this->date)) { echo 'value="'.$this->date.'"'; } ?> name="time" label="Uhrzeit"/> 
 	<fb:editor-textarea label="Description" name="description" rows="10">
 		 <?php echo $this->escape($this->params['description']) ?>
 	</fb:editor-textarea>
     <fb:editor-buttonset>
-        <fb:editor-button value="Start project"/><fb:editor-cancel href="<?php echo $this->canvasUrl ?>"/>
+        <fb:editor-button value="Event anlegen"/><fb:editor-cancel href="<?php echo $this->canvasUrl ?>"/>
     </fb:editor-buttonset>
 </fb:editor>
 <script>
