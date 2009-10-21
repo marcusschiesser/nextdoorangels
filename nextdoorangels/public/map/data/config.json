@@ -1,10 +1,13 @@
 {"infoText":"Please enter your location and find social projects in your neighborhood",
-"locationSelectorTemplate":"{root}/templates/locationSelector.html",
-"bodyTemplate":"{root}/templates/body.html",
-"locationFilterTemplate":"{root}/templates/locationFilter.html",
-"locationSummaryItemTemplate":"{root}/templates/locationSummaryItem.html",
-"locationSummaryTemplate":"{root}/templates/locationSummary.html",
-"directionsTemplate":"{root}/templates/distance.html",
+"templates":{
+	"locationSelector":"{root}/templates/locationSelector.html",
+	"body":"{root}/templates/body.html",
+	"locationFilter":"{root}/templates/locationFilter.html",
+	"locationSummaryItem":"{root}/templates/locationSummaryItem.html",
+	"locationListItem":"{root}/templates/locationListItem.html",
+	"locationSummary":"{root}/templates/locationSummary.html",
+	"directions":"{root}/templates/distance.html"
+},
 "clusters":[{
 														"image":"icon/icon_concern_numbered.png",
 														"width":30,
