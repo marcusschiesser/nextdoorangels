@@ -1,4 +1,4 @@
-{"infoText":"Please enter your location and find social projects in your neighborhood",
+{"infoText":"Please enter your location and find social events in your area",
 "templates":{
 	"locationSelector":"{root}/templates/locationSelector.html",
 	"body":"{root}/templates/body.html",
