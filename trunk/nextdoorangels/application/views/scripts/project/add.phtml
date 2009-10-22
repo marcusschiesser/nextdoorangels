@@ -7,17 +7,26 @@
     	<fb:fbml-attribute name="label"><fb:intl>Straße</fb:intl></fb:fbml-attribute> 
         <input type="text" id="streetEditor" name="street" value="<?php echo $this->escape($this->params['street']) ?>" onchange="changePlace();"/>
     </fb:editor-custom>
-    <fb:editor-custom label="Stadt">
+    <fb:editor-custom>
+    	<fb:fbml-attribute name="label"><fb:intl>Stadt</fb:intl></fb:fbml-attribute> 
         <input type="text" id="cityEditor" name="city" value="<?php echo $this->escape($this->params['city']) ?>" onchange="changePlace();"/>
 		<img id="map" width="300" height="200" style="border:0;margin:4px 0 0 0;"/>
     </fb:editor-custom>
-	<fb:editor-date label="Datum" <?php if(isset($this->date)) { echo 'value="'.$this->date.'"'; } ?> />
-	<fb:editor-time <?php if(isset($this->date)) { echo 'value="'.$this->date.'"'; } ?> name="time" label="Uhrzeit"/> 
-	<fb:editor-textarea label="Description" name="description" rows="10">
+	<fb:editor-date <?php if(isset($this->date)) { echo 'value="'.$this->date.'"'; } ?> >
+    	<fb:fbml-attribute name="label"><fb:intl>Datum</fb:intl></fb:fbml-attribute> 
+	</fb:editor-date>	
+	<fb:editor-time <?php if(isset($this->date)) { echo 'value="'.$this->date.'"'; } ?> name="time">
+    	<fb:fbml-attribute name="label"><fb:intl>Uhrzeit</fb:intl></fb:fbml-attribute> 
+	</fb:editor-time> 
+	<fb:editor-textarea name="description" rows="10">
+    	<fb:fbml-attribute name="label"><fb:intl>Beschreibung</fb:intl></fb:fbml-attribute> 
 		 <?php echo $this->escape($this->params['description']) ?>
 	</fb:editor-textarea>
     <fb:editor-buttonset>
-        <fb:editor-button value="Event anlegen"/><fb:editor-cancel href="<?php echo $this->canvasUrl ?>"/>
+        <fb:editor-button>
+	    	<fb:fbml-attribute name="value"><fb:intl>Event anlegen</fb:intl></fb:fbml-attribute> 
+       	</fb:editor-button>
+		<fb:editor-cancel href="<?php echo $this->canvasUrl ?>"/>
     </fb:editor-buttonset>
 </fb:editor>
 <script>

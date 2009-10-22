@@ -32,7 +32,7 @@ class ProjectController extends FacebookController {
             $street = $request->getParam('street');
             $city = $request->getParam('city');
             $this->view->params = $request->getParams();
-			date_default_timezone_set('Europe/Berlin');
+            date_default_timezone_set('GMT');
             $createdTime = new Zend_Date();
             $startTime = new Zend_Date();
             $startTime->set($request->getParam('date_month'), Zend_Date::MONTH);
@@ -42,11 +42,11 @@ class ProjectController extends FacebookController {
             if ($request->getParam('time_ampm') == 'pm') {
                 $startTime->add(12, Zend_Date::HOUR);
             }
-			$startTime->setTimezone('America/Los_Angeles');
             $endTime = clone $startTime;
             $endTime->add(4, Zend_Date::HOUR);
-			$this->view->date = $startTime->getTimestamp() + $startTime->getGmtOffset(); 
-			// TODO: convert FB timezone http://forum.developers.facebook.com/viewtopic.php?id=24220
+			$fbTime = clone $startTime;
+            $fbTime->setTimezone('America/Los_Angeles');
+            $this->view->date = $startTime->getTimestamp() + $fbTime->getGmtOffset();
             // validate values
             $titleValidator = new Zend_Validate();
             $titleValidator->addValidator( new Zend_Validate_StringLength(8));
@@ -74,7 +74,7 @@ class ProjectController extends FacebookController {
                 if (count($this->view->errors) == 0) {
                     try {
                         // commit project
-                        $event_data = array('name'=>$title, 'city'=>$city, 'location'=>$street, 'start_time'=>$startTime->getTimestamp(), 'end_time'=>$endTime->getTimestamp(), 'category'=>2, 'subcategory'=>30, 'host'=>'You');
+                        $event_data = array('name'=>$title, 'city'=>$city, 'location'=>$street, 'start_time'=>($startTime->getTimestamp() + $fbTime->getGmtOffset()), 'end_time'=>($endTime->getTimestamp() + $fbTime->getGmtOffset()), 'category'=>2, 'subcategory'=>30, 'host'=>'You');
                         $event_id = $this->facebook->api_client->events_create($event_data);
                         $table = new Model_DbTable_Problems();
                         $table->insert(array('p_name'=>$title, 'p_description'=>$description, 'p_city'=>$city, 'p_location'=>$street, 'p_lat'=>$lat, 'p_lng'=>$lng, 'fb_user_id'=>$this->fbUserId, 'p_deadline'=>$startTime->toString('YYYY-MM-dd HH:mm:ss'), 'p_created_at'=>$createdTime->toString('YYYY-MM-dd HH:mm:ss'), 'fb_event_id'=>$event_id));
