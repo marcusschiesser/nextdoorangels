@@ -74,7 +74,7 @@ class ProjectController extends FacebookController {
                 if (count($this->view->errors) == 0) {
                     try {
                         // commit project
-                        $event_data = array('name'=>$title, 'city'=>$city, 'location'=>$street, 'start_time'=>($startTime->getTimestamp() + $fbTime->getGmtOffset()), 'end_time'=>($endTime->getTimestamp() + $fbTime->getGmtOffset()), 'category'=>2, 'subcategory'=>30, 'host'=>'You');
+                        $event_data = array('name'=>$title, 'city'=>$city, 'location'=>$street, 'start_time'=>($startTime->getTimestamp() + $fbTime->getGmtOffset()), 'end_time'=>($endTime->getTimestamp() + $fbTime->getGmtOffset()), 'category'=>2, 'subcategory'=>30, 'host'=>'You', 'description'=>("Created by NextdoorAngels (http://apps.facebook.com/nextdoorangels)\n\n".$description));
                         $event_id = $this->facebook->api_client->events_create($event_data);
                         $table = new Model_DbTable_Problems();
                         $table->insert(array('p_name'=>$title, 'p_description'=>$description, 'p_city'=>$city, 'p_location'=>$street, 'p_lat'=>$lat, 'p_lng'=>$lng, 'fb_user_id'=>$this->fbUserId, 'p_deadline'=>$startTime->toString('YYYY-MM-dd HH:mm:ss'), 'p_created_at'=>$createdTime->toString('YYYY-MM-dd HH:mm:ss'), 'fb_event_id'=>$event_id));
