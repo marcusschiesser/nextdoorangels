@@ -2,11 +2,13 @@
 "templates":{
 	"locationSelector":"{root}/templates/locationSelector.html",
 	"body":"{root}/templates/body.html",
+	"route":"{root}/templates/route.html",
 	"locationFilter":"{root}/templates/locationFilter.html",
 	"locationSummaryItem":"{root}/templates/locationSummaryItem.html",
 	"locationListItem":"{root}/templates/locationListItem.html",
 	"locationSummary":"{root}/templates/locationSummary.html",
-	"directions":"{root}/templates/distance.html"
+	"directions":"{root}/templates/directions.html",
+	"directionsItem":"{root}/templates/directionsItem.html"
 },
 "clusters":[{
 														"image":"icon/icon_concern_numbered.png",
