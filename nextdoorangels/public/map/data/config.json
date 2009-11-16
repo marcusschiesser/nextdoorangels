@@ -6,6 +6,7 @@
 	"locationFilter":"{root}/templates/locationFilter.html",
 	"locationSummaryItem":"{root}/templates/locationSummaryItem.html",
 	"locationListItem":"{root}/templates/locationListItem.html",
+	"locationListHiddenItem":"{root}/templates/locationListHiddenItem.html",
 	"locationSummary":"{root}/templates/locationSummary.html",
 	"directions":"{root}/templates/directions.html",
 	"directionsItem":"{root}/templates/directionsItem.html"
