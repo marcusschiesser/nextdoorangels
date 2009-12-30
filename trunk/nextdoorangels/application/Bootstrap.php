@@ -6,7 +6,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         $writer = new Zend_Log_Writer_Stream(APPLICATION_PATH . '/../public/app.log');
         $logger = new Zend_Log($writer);
         Zend_Registry::set('logger', $logger);
-        //testing svn
+
         return $moduleLoader;
     }
     
