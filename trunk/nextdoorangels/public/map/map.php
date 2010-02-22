@@ -14,5 +14,8 @@
         <script type="text/javascript" src="http://www.geowidget.de/geowidget-js/build/geowidget.js"></script>
     </head>
 	
-    <body class="yui-skin-sam form" onunload="GUnload();"></body>
+    <body class="yui-skin-sam form" onunload="GUnload();">
+		<div id="gw-layout"></div>
+		<div id="gw-layout-block"></div>
+    </body>
 </html>
